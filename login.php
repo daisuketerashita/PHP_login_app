@@ -1,3 +1,17 @@
+<?php
+if($_POST){
+    //POST情報があるとき
+    //1.入力チェック
+    //2.ログインID,パスワードが一致しているかチェック
+    //3.ログイン後画面にリダイレクト
+    $host = $_SERVER['HTTP_HOST'];
+    $uri = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+    header("Location: //$host$uri/member.php");
+    exit;
+}else{
+    //GET情報のとき
+}
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
