@@ -19,6 +19,12 @@ if($_POST){
         $errmsg[] = 'パスワードが一致しません';
     }
     //2.新規ユーザー登録処理
+    $userfile = './user/userinfo.txt';
+    if(!$errmsg){
+    $ph = password_hash($_POST['p'],PASSWORD_DEFAULT);
+    $line = '"'.$_POST['e'].'","'.$ph.'"'."\n";
+    $ret = file_put_contents($userfile,$line,FILE_APPEND);
+    }
     //3.ログイン画面にリダイレクト
     if(!$errmsg){
     $host = $_SERVER['HTTP_HOST'];
@@ -47,7 +53,7 @@ if($_POST){
         <div class="alert alert-danger" role="alert"><?php echo implode('<br>',$errmsg); ?></div>
     <?php endif; ?>
             <form action="./register.php" method="POST">
-                Eメール：<input type="email" name="e" value="" class="form-control"><br>
+                Eメール：<input type="email" name="e" value="<?php htmlspecialchars($_POST['e']); ?>" class="form-control"><br>
                 パスワード：<input type="password" name="p" value="" class="form-control"><br>
                 パスワード（確認）：<input type="password" name="p2" value="" class="form-control"><br>
                 <div class="button">
