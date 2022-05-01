@@ -1,13 +1,31 @@
 <?php
+$errmsg = array();
 if($_POST){
     //POST情報があるとき
     //1.入力チェック
+    if(!$_POST['e']){
+        $errmsg[] = 'Eメールを入力してください';
+    }elseif(strlen($_POST['e']) > 100){
+        $errmsg[] = 'Eメールは100文字以内で入力してください';
+    }
+
+    if(!$_POST['p']){
+        $errmsg[] = 'パスワードを入力してください';
+    }elseif(strlen($_POST['e']) > 50){
+        $errmsg[] = 'パスワードは50文字以内で入力してください';
+    }
+
+    if($_POST['p'] != $_POST['p2']){
+        $errmsg[] = 'パスワードが一致しません';
+    }
     //2.新規ユーザー登録処理
     //3.ログイン画面にリダイレクト
+    if(!$errmsg){
     $host = $_SERVER['HTTP_HOST'];
     $uri = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
     header("Location: //$host$uri/login.php");
     exit;
+    }
 }else{
     //GET情報のとき
 }
@@ -25,6 +43,9 @@ if($_POST){
 <body>
 <div class="container">
     <div class="mx-auto" style="width: 400px;">
+    <?php if($errmsg): ?>
+        <div class="alert alert-danger" role="alert"><?php echo implode('<br>',$errmsg); ?></div>
+    <?php endif; ?>
             <form action="./register.php" method="POST">
                 Eメール：<input type="email" name="e" value="" class="form-control"><br>
                 パスワード：<input type="password" name="p" value="" class="form-control"><br>
