@@ -1,4 +1,5 @@
 <?php
+session_start();
 $errmsg = array();
 if($_POST){
     //POST情報があるとき
@@ -24,6 +25,7 @@ if($_POST){
             $v_ary = str_getcsv($v);
             if($v_ary[0] == $POST['e']){
                 if(password_verify($_POST['p'],$v_ary[1])){
+                    $_SESSION['e'] = $_POST['e']; //セッション情報保存
                     $host = $_SERVER['HTTP_HOST'];
                     $uri = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
                     header("Location: //$host$uri/member.php");
