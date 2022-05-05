@@ -18,8 +18,21 @@ if($_POST){
     if($_POST['p'] != $_POST['p2']){
         $errmsg[] = 'パスワードが一致しません';
     }
-    //2.新規ユーザー登録処理
+
     $userfile = './user/userinfo.txt';
+    $users = array();
+    if(file_exists($userfile)){
+    $users = file_get_contents($userfile);
+    $users = explode("\n",$users);
+    foreach($users as $k => $v){
+        $v_ary = str_getcsv($v);
+        if($v_ary[0] == $POST['e']){
+            $errmsg[] = 'そのEメールはすでに登録されています';
+            break;
+        }
+    }
+    }
+    //2.新規ユーザー登録処理
     if(!$errmsg){
     $ph = password_hash($_POST['p'],PASSWORD_DEFAULT);
     $line = '"'.$_POST['e'].'","'.$ph.'"'."\n";
